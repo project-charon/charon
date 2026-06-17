@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Charon</title>
+
+<style>
+:root{
+    --bg:#090b0e;
+    --card:#11161d;
+    --border:#1b2430;
+    --text:#f5f7fa;
+    --muted:#7d8693;
+    --accent:#4f8cff;
+    --green:#3ddc84;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,sans-serif;
+    min-height:100vh;
+}
+
+.container{
+    width:100%;
+    max-width:850px;
+    margin:auto;
+    padding:28px 24px 60px;
+}
+
+.hero{
+    text-align:center;
+    padding:70px 0 50px;
+}
+
+.accent-line{
+    width:60px;
+    height:2px;
+    background:var(--accent);
+    margin:0 auto 28px;
+    border-radius:999px;
+}
+
+h1{
+    font-size:2.8rem;
+    font-weight:700;
+    margin-bottom:18px;
+    letter-spacing:-1px;
+}
+
+.quote{
+    max-width:520px;
+    margin:0 auto 10px;
+    color:var(--text);
+    font-size:1.05rem;
+    line-height:1.8;
+}
+
+.author{
+    color:var(--muted);
+    font-size:.85rem;
+    margin-bottom:24px;
+}
+
+.subtitle{
+    color:var(--muted);
+    max-width:520px;
+    margin:auto;
+    line-height:1.7;
+    margin-bottom:28px;
+}
+
+.connect{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--accent);
+    color:white;
+    border:none;
+    border-radius:999px;
+    padding:14px 28px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.connect:hover{
+    opacity:.9;
+}
+
+.status{
+    margin-top:14px;
+    color:var(--muted);
+    font-size:.9rem;
+}
+
+.dot{
+    display:inline-block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+    margin-right:6px;
+}
+
+.section{
+    margin-top:30px;
+}
+
+.section-title{
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    font-size:.78rem;
+    margin-bottom:10px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+}
+
+.card{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:var(--text);
+    background:transparent;
+    border:1px solid var(--border);
+    border-radius:10px;
+    min-height:54px;
+    font-weight:500;
+    transition:.15s;
+}
+
+.card:hover{
+    border-color:var(--accent);
+    background:rgba(79,140,255,.04);
+}
+
+@media(max-width:700px){
+
+.grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:500px){
+
+.grid{
+    grid-template-columns:1fr;
+}
+
+h1{
+    font-size:2.2rem;
+}
+
+.hero{
+    padding-top:50px;
+}
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<section class="hero">
+
+
+<div class="accent-line"></div>
+
+<h1>Project Charon</h1>
+
+<p class="quote">
+    "Freedom is not given to us by anyone.
+    We must cultivate it ourselves."
+</p>
+
+<p class="author">
+    — Inspired by Cato the Younger
+</p>
+
+<p class="subtitle">
+    Emergency access to communication,
+    knowledge and independent information.
+</p>
+
+<button class="connect">
+    Connect to Network
+</button>
+
+<div class="status">
+    <span class="dot"></span>
+    Ready
+</div>
+
+</section>
+
+<section class="section">
+
+
+<div class="section-title">
+    Communication
+</div>
+
+<div class="grid">
+    <a href="https://signal.org" class="card">Signal</a>
+    <a href="https://proton.me/mail" class="card">Proton Mail</a>
+    <a href="https://getsession.org" class="card">Session</a>
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="section-title">
+    Access Tools
+</div>
+
+<div class="grid">
+    <a href="https://www.torproject.org" class="card">Tor Browser</a>
+    <a href="https://psiphon.ca" class="card">Psiphon</a>
+    <a href="https://getoutline.org" class="card">Outline</a>
+    <a href="https://getlantern.org" class="card">Lantern</a>
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="section-title">
+    VPNs
+</div>
+
+<div class="grid">
+    <a href="https://protonvpn.com" class="card">Proton VPN</a>
+    <a href="https://mullvad.net" class="card">Mullvad</a>
+    <a href="https://www.wireguard.com" class="card">WireGuard</a>
+    <a href="https://openvpn.net" class="card">OpenVPN</a>
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="section-title">
+    Downloads
+</div>
+
+<div class="grid">
+    <a href="https://github.com" class="card">GitHub</a>
+    <a href="https://gitlab.com" class="card">GitLab</a>
+    <a href="https://f-droid.org" class="card">F-Droid</a>
+</div>
+
+</section>
+
+<section class="section">
+
+<div class="section-title">
+    Independent News
+</div>
+
+<div class="grid">
+    <a href="https://myanmar-now.org" class="card">Myanmar Now</a>
+    <a href="https://mizzima.com" class="card">Mizzima</a>
+    <a href="https://www.irrawaddy.com" class="card">The Irrawaddy</a>
+    <a href="https://www.bbc.com/burmese" class="card">BBC Burmese</a>
+    <a href="https://www.rfa.org" class="card">Radio Free Asia</a>
+    <a href="https://burmese.voanews.com" class="card">VOA Burmese</a>
+</div>
+
+</section>
+
+</div>
+
+</body>
+</html>
+
+
