@@ -59,11 +59,15 @@ async function connectBroker() {
         }
     };
 
-    broker.onerror = () => {
-        status.textContent = "Broker Error";
-    };
+    broker.onerror = (e) => {
+
+    console.error("[Charon] Broker error", e);
+
+    status.textContent = "Broker Error";
+};
 
   broker.onclose = (event) => {
+
     console.log(
         "[Charon] Broker disconnected",
         "code=", event.code,
