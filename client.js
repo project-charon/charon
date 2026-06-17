@@ -29,7 +29,7 @@ async function connectBroker() {
 
         const msg = JSON.parse(event.data);
 
-        console.log("[Charon]", msg);
+        console.log("[Charon FULL MESSAGE]", JSON.stringify(msg, null, 2));
 
         if (msg.type === "registered") {
 
