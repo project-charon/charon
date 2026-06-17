@@ -63,12 +63,14 @@ async function connectBroker() {
         status.textContent = "Broker Error";
     };
 
-  broker.onclose = () => {
-
-    console.log("[Charon] Broker disconnected");
+  broker.onclose = (event) => {
+    console.log(
+        "[Charon] Broker disconnected",
+        "code=", event.code,
+        "reason=", event.reason
+    );
 
     status.textContent = "Disconnected";
-
 };
 }
 
