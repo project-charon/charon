@@ -4,20 +4,11 @@ let broker = null;
 let peerConnection = null;
 let selectedFerryman = null;
 
-
 async function connectBroker() {
 
-    ...
-
-    broker.onclose = () => {
-
-        console.log("[Charon] Broker disconnected");
-
-        status.textContent = "Disconnected";
-
-    };
-
-}
+    if (broker && broker.readyState === WebSocket.OPEN) {
+        return;
+    }
 
     const status = document.getElementById("status");
     status.textContent = "Connecting...";
@@ -44,6 +35,7 @@ async function connectBroker() {
         if (msg.type === "registered") {
 
             const ferrymen = msg.ferrymen || [];
+
             selectedFerryman = ferrymen[0] || null;
 
             status.textContent =
@@ -68,19 +60,30 @@ async function connectBroker() {
 
             });
         }
+
     };
 
     broker.onerror = () => {
+
         status.textContent = "Broker Error";
+
     };
 
-  broker.onclose = () => {
+    broker.onclose = () => {
 
-    console.log("[Charon] Broker disconnected");
+        console.log("[Charon] Broker disconnected");
 
-    status.textContent = "Disconnected";
+        status.textContent = "Disconnected";
 
-};
+    };
+}
+
+async function connectToFerryman() {
+
+    if (!selectedFerryman) {
+        console.log("No ferryman available");
+        return;
+    }
 
     console.log(
         "Connecting to ferryman:",
@@ -90,21 +93,25 @@ async function connectBroker() {
     peerConnection =
         new RTCPeerConnection({
             iceServers: [
-                { urls: "stun:stun.l.google.com:19302" }
+                {
+                    urls:
+                        "stun:stun.l.google.com:19302"
+                }
             ]
         });
 
-    peerConnection.onicecandidate = (event) => {
+    peerConnection.onicecandidate =
+        (event) => {
 
-        if (!event.candidate) return;
+            if (!event.candidate) return;
 
-        broker.send(JSON.stringify({
-            type: "ice",
-            peerId: selectedFerryman.id,
-            data: event.candidate
-        }));
+            broker.send(JSON.stringify({
+                type: "ice",
+                peerId: selectedFerryman.id,
+                data: event.candidate
+            }));
 
-    };
+        };
 
     const offer =
         await peerConnection.createOffer();
@@ -122,22 +129,27 @@ async function connectBroker() {
     console.log("Offer sent");
 }
 
-}
+window.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-window.addEventListener("DOMContentLoaded", () => {
+        const button =
+            document.getElementById("connect");
 
-    const button = document.getElementById("connect");
+        if (!button) return;
 
-    if (button) {
         button.addEventListener(
-    "click",
-    async () => {
+            "click",
+            async () => {
 
-        await connectBroker();
+                await connectBroker();
 
-        setTimeout(
-            connectToFerryman,
-            1000
+                setTimeout(
+                    connectToFerryman,
+                    1000
+                );
+
+            }
         );
 
     }
