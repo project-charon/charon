@@ -7,9 +7,17 @@ let selectedFerryman = null;
 
 async function connectBroker() {
 
-    if (broker && broker.readyState === WebSocket.OPEN) {
-        return;
-    }
+    ...
+
+    broker.onclose = () => {
+
+        console.log("[Charon] Broker disconnected");
+
+        status.textContent = "Disconnected";
+
+    };
+
+}
 
     const status = document.getElementById("status");
     status.textContent = "Connecting...";
@@ -73,13 +81,6 @@ async function connectBroker() {
     status.textContent = "Disconnected";
 
 };
-
-async function connectToFerryman() {
-
-    if (!selectedFerryman) {
-        console.log("No ferryman available");
-        return;
-    }
 
     console.log(
         "Connecting to ferryman:",
