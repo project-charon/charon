@@ -34,12 +34,18 @@ async function connectBroker() {
 
         if (msg.type === "registered") {
 
-            const ferrymen = msg.ferrymen || [];
+           const ferrymen = msg.ferrymen || [];
 
-            selectedFerryman = ferrymen[0] || null;
+selectedFerryman =
+    ferrymen[ferrymen.length - 1] || null;
 
-            status.textContent =
-                `${ferrymen.length} Ferryman${ferrymen.length !== 1 ? "s" : ""} Available`;
+console.log(
+    "SELECTED FERRYMAN:",
+    selectedFerryman
+);
+
+status.textContent =
+    `${ferrymen.length} Ferryman${ferrymen.length !== 1 ? "s" : ""} Available`;
 
             console.log("Ferrymen:", ferrymen);
 
