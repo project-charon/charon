@@ -1,6 +1,8 @@
 const BROKER_URL = "wss://charon.jayme53100.workers.dev";
 
 let broker = null;
+let peerConnection = null;
+let selectedFerryman = null;
 
 
 async function connectBroker() {
@@ -29,11 +31,12 @@ async function connectBroker() {
 
         const msg = JSON.parse(event.data);
 
-        console.log("[Charon FULL MESSAGE]", JSON.stringify(msg, null, 2));
+        console.log("[Charon]", msg);
 
         if (msg.type === "registered") {
 
             const ferrymen = msg.ferrymen || [];
+            selectedFerryman = ferrymen[0] || null;
 
             status.textContent =
                 `${ferrymen.length} Ferryman${ferrymen.length !== 1 ? "s" : ""} Available`;
@@ -59,23 +62,65 @@ async function connectBroker() {
         }
     };
 
-    broker.onerror = (e) => {
+    broker.onerror = () => {
+        status.textContent = "Broker Error";
+    };
 
-    console.error("[Charon] Broker error", e);
+  broker.onclose = () => {
 
-    status.textContent = "Broker Error";
-};
-
-  broker.onclose = (event) => {
-
-    console.log(
-        "[Charon] Broker disconnected",
-        "code=", event.code,
-        "reason=", event.reason
-    );
+    console.log("[Charon] Broker disconnected");
 
     status.textContent = "Disconnected";
+
 };
+
+async function connectToFerryman() {
+
+    if (!selectedFerryman) {
+        console.log("No ferryman available");
+        return;
+    }
+
+    console.log(
+        "Connecting to ferryman:",
+        selectedFerryman.id
+    );
+
+    peerConnection =
+        new RTCPeerConnection({
+            iceServers: [
+                { urls: "stun:stun.l.google.com:19302" }
+            ]
+        });
+
+    peerConnection.onicecandidate = (event) => {
+
+        if (!event.candidate) return;
+
+        broker.send(JSON.stringify({
+            type: "ice",
+            peerId: selectedFerryman.id,
+            data: event.candidate
+        }));
+
+    };
+
+    const offer =
+        await peerConnection.createOffer();
+
+    await peerConnection.setLocalDescription(
+        offer
+    );
+
+    broker.send(JSON.stringify({
+        type: "offer",
+        peerId: selectedFerryman.id,
+        data: offer
+    }));
+
+    console.log("Offer sent");
+}
+
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -83,7 +128,16 @@ window.addEventListener("DOMContentLoaded", () => {
     const button = document.getElementById("connect");
 
     if (button) {
-        button.addEventListener("click", connectBroker);
-    }
+        button.addEventListener(
+    "click",
+    async () => {
 
-});
+        await connectBroker();
+
+        setTimeout(
+            connectToFerryman,
+            1000
+        );
+
+    }
+);
